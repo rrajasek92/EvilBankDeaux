@@ -14,12 +14,7 @@ public class EvilBankApp {
 	protected static ArrayList<String> ssnList2=new ArrayList<String>();
 	protected static LinkedHashMap<String,Account> accChecking=new LinkedHashMap<String,Account>();
 	protected static LinkedHashMap<String,Account> accSavings=new LinkedHashMap<String,Account>();
-	public static void displayTrans(){
-		System.out.println("Transaction History");
-		for(Transaction trans:transHistory){
-			System.out.println(trans.toString());
-		}
-	}
+
 	public static void main(String[] args){
 		
 		//InitializeDatabase.initDB();
@@ -175,27 +170,31 @@ public class EvilBankApp {
 				if (ltype.equals("Withdrawal")&&lamount>theAcct.getAcctBalance()){
 					System.out.println("Insufficient funds! Withdrawal declined!");}
 				else{
-				System.out.println("Enter the date of the check (YYYY-MM-DD): ");
+				System.out.println("Enter the date of the transaction (YYYY-MM-DD): ");
 				ldate=keyboard.next();
 				Transaction trans=new Transaction(laccount,lamount,ltype,ldate);
 				transHistory.add(trans); // grand transaction history, not even in date order
 				trans.writeToFile(laccount); // transaction for individual account, not in date order 
 				theAcct.processTrans(trans);
-				transactionDB.sendToDatabase(acctNum, lamount, ltype, ldate, index);
+				transactionDB.sendToDatabase(laccount, lamount, ltype, ldate, index);
 				index++;
 				}
 				}
-			// sort transHistory by time  -- grand transaction history
-			// group time ordered transaction by account number 
-			//displayTrans();
+			System.out.println("Checking Accounts\n-------------------------");
+			
 			for (Account anAcct : EvilBankApp.acctList1) {
-				System.out.println("The balance for checking account "+anAcct.getAcctNo()+" is "+anAcct.getAcctBalance());
+				System.out.println("The balance for account "+anAcct.getAcctNo()+" is "+anAcct.getAcctBalance());
 			}
+			
+			System.out.println("Savings Accounts\n-------------------------");
+
 			for (Account anAcct : EvilBankApp.acctList2) {
-				System.out.println("The balance for savings account "+anAcct.getAcctNo()+" is "+anAcct.getAcctBalance());
+				System.out.println("The balance for account "+anAcct.getAcctNo()+" is "+anAcct.getAcctBalance());
 			}
 			System.out.println("\nTransaction History: \n-----------------------\n");
 			Retrieve.retrieveDB();
 			System.out.println("\nClosing Program.....");
+			
 	}
+	
 }
