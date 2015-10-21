@@ -169,13 +169,27 @@ public class EvilBankApp {
 				lamount=keyboard.nextFloat();
 				if (ltype.equals("Withdrawal")&&lamount>theAcct.getAcctBalance()){
 					System.out.println("Insufficient funds! Withdrawal declined!");}
+				if (ltype.equals("Transfer")&&lamount>theAcct.getAcctBalance()){
+					System.out.println("Insufficient funds! Transfer denied!");}
 				else{
 				System.out.println("Enter the date of the transaction (YYYY-MM-DD): ");
 				ldate=keyboard.next();
+				if(ltype.equals("Transfer")){
+					String toAcct="";
+					System.out.println("Transfer to which account?");
+					toAcct=keyboard.next();
+					Account acct1=new Account(laccount);
+					Account acct2=new Account(toAcct);
+					float acbal1=acct1.getAcctBalance();
+					float acbal2=acct2.getAcctBalance();
+					Transfer.acctTransfer(toAcct, laccount, acbal2, acbal1, lamount);
+				}
+				else{
 				Transaction trans=new Transaction(laccount,lamount,ltype,ldate);
-				transHistory.add(trans); // grand transaction history, not even in date order
-				trans.writeToFile(laccount); // transaction for individual account, not in date order 
-				theAcct.processTrans(trans);
+				theAcct.processTrans(trans);}
+	//			transHistory.add(trans); // grand transaction history, not even in date order
+	//			trans.writeToFile(laccount); // transaction for individual account, not in date order 
+				
 				transactionDB.sendToDatabase(laccount, lamount, ltype, ldate, index);
 				index++;
 				}

@@ -1,11 +1,16 @@
 package EvilBank;
 import java.util.ArrayList;
+import java.util.Scanner;
+
+
+
 public class Account {
-private String acctNo;
-private String acctName;
-private double chargeBalance;
-private float acctBalance; 
-private double fee=35.0;
+	private String acctNo;
+	private String acctName;
+	private double chargeBalance;
+	private float acctBalance; 
+	private double fee=35.0;
+	public Scanner keyboard=new Scanner(System.in);
 
 	public Account(String acctNo,String acctName,float acctBalance){
 		this.setAcctNo(acctNo);
@@ -79,6 +84,7 @@ private double fee=35.0;
 			if (trans.getChargeAmt()>acctBalance) System.out.println("Insufficient funds!");
 			else acctBalance-=trans.getChargeAmt();
 		}break;
+		
 		
 		}
 	}
